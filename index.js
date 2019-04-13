@@ -5,11 +5,11 @@ const url = [`${proxy}https://www.imdb.com/title/tt4154664/?pf_rd_m=A2FGELUUNOQJ
 
 ( async()=>{
     let moviesData = [];
-
+    // LOOP
     for(let movie of url) {
-    
         const res = await request({
             uri:movie,
+            // SPOOF THEM HEADERS
             headers: {
                 "authority": "www.imdb.com",
                 "method": "GET",
@@ -36,7 +36,5 @@ const url = [`${proxy}https://www.imdb.com/title/tt4154664/?pf_rd_m=A2FGELUUNOQJ
             copy.push(items);
         })
         console.log(`title: ${title} rating: ${rating} poster image url: ${poster} number of ratings: ${ratingValue} array: ${copy}`);
-   
-    }
-    
+    }  
 })();
