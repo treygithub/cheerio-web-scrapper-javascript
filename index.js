@@ -22,7 +22,7 @@ const url = [`${proxy}https://www.imdb.com/title/tt4154664/?pf_rd_m=A2FGELUUNOQJ
                 "dnt": "1",
                 "referer": "https://www.imdb.com/",
                 "upgrade-insecure-requests": "1",
-                "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36"
+                "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/527.36 (KHTML, like Gecko) Chrome/73.0.3343533.86 Safari/447.36"
             },
         });
         let $ = cheerio.load(res);
