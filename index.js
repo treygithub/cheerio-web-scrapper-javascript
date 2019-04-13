@@ -1,12 +1,15 @@
 const request = require('request-promise');
 const cheerio = require('cheerio');
 const proxy = 'https://bypasscors.herokuapp.com/api/?url=';
-const url = `${proxy}https://www.imdb.com/title/tt4154664/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=740b2354-425b-4cd3-947b-7f9cb4349875&pf_rd_r=DFRWPM57QBF3QXD0RV1M&pf_rd_s=right-7&pf_rd_t=15061&pf_rd_i=homepage&ref_=hm_cht_t4`;
+const url = [`${proxy}https://www.imdb.com/title/tt4154664/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=740b2354-425b-4cd3-947b-7f9cb4349875&pf_rd_r=DFRWPM57QBF3QXD0RV1M&pf_rd_s=right-7&pf_rd_t=15061&pf_rd_i=homepage&ref_=hm_cht_t4`,`${proxy}https://www.imdb.com/title/tt0137523/?ref_=nv_sr_3?ref_=nv_sr_3`];
 
 ( async()=>{
-    try {
+    let moviesData = [];
+
+    for(let movie of url) {
+    
         const res = await request({
-            uri:url,
+            uri:movie,
             headers: {
                 "authority": "www.imdb.com",
                 "method": "GET",
@@ -27,8 +30,13 @@ const url = `${proxy}https://www.imdb.com/title/tt4154664/?pf_rd_m=A2FGELUUNOQJN
         let rating = $('span[itemprop="ratingValue"]').text();
         let poster = $('div[class="poster"] > a > img').attr('src');
         let ratingValue = $('div[class="imdbRating"] > a > span').text();
-        console.log('title,rating and poster:', title,rating,poster,ratingValue);
-    } catch (error) {
-        console.log('TREY error', error);
+        let copy =[];
+        $('div[class=subtext] a[href^="/search/"]').each((i,item)=>{
+            let items = $(item).text();
+            copy.push(items);
+        })
+        console.log(`title: ${title} rating: ${rating} poster image url: ${poster} number of ratings: ${ratingValue} array: ${copy}`);
+   
     }
+    
 })();
