@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
-const PORT = process.env.PORT || 3004;
+const PORT = process.env.PORT || 3005;
 const axios = require('axios');
 const request = require('request-promise');
 const cheerio = require('cheerio');
@@ -32,25 +32,7 @@ app.get('/', async (req,res)=>{
         let title = $('div[class="title_wrapper"] > h1').text();
         console.log('title', title)
         res.status(200).send(title);
-});
-
-app.get('/repeat/:id/:num',(req,res)=>{
-  let id = req.params.id;
-  let num = req.params.num;
-  num = parseInt(num)
-  let h = [];
-  let printParams = (()=>{
-    for(let i = 0; i < num; i++){
-     h.push(id);
-    }
-  })();
-
-  let html = h.map((e,i)=>{
-    console.log('index is :', i, e)
-  })
-  
-  res.status(200).send(html)
-})
+}); 
 
 //endpoints
 //app.use('/gigs',routeController);

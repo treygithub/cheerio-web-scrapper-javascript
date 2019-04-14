@@ -2,6 +2,7 @@ const request = require('request-promise');
 const cheerio = require('cheerio');
 const proxy = 'https://bypasscors.herokuapp.com/api/?url=';
 const url = [`${proxy}https://www.imdb.com/title/tt4154664/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=740b2354-425b-4cd3-947b-7f9cb4349875&pf_rd_r=DFRWPM57QBF3QXD0RV1M&pf_rd_s=right-7&pf_rd_t=15061&pf_rd_i=homepage&ref_=hm_cht_t4`,`${proxy}https://www.imdb.com/title/tt0137523/?ref_=nv_sr_3?ref_=nv_sr_3`];
+const fs = require('fs');
 
 ( async()=>{
     let moviesData = [];
@@ -22,7 +23,7 @@ const url = [`${proxy}https://www.imdb.com/title/tt4154664/?pf_rd_m=A2FGELUUNOQJ
                 "dnt": "1",
                 "referer": "https://www.imdb.com/",
                 "upgrade-insecure-requests": "1",
-                "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/527.36 (KHTML, like Gecko) Chrome/73.0.3343533.86 Safari/447.36"
+                "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36"
             },
         });
         let $ = cheerio.load(res);
@@ -30,11 +31,19 @@ const url = [`${proxy}https://www.imdb.com/title/tt4154664/?pf_rd_m=A2FGELUUNOQJ
         let rating = $('span[itemprop="ratingValue"]').text();
         let poster = $('div[class="poster"] > a > img').attr('src');
         let ratingValue = $('div[class="imdbRating"] > a > span').text();
-        let copy =[];
+        let genra =[];
         $('div[class=subtext] a[href^="/search/"]').each((i,item)=>{
             let items = $(item).text();
-            copy.push(items);
+            genra.push(items);
         })
-        console.log(`title: ${title} rating: ${rating} poster image url: ${poster} number of ratings: ${ratingValue} array: ${copy}`);
-    }  
+        moviesData.push({
+            title,
+            rating,
+            ratingValue,
+            poster,
+            genra
+        })
+}
+        console.log('moviesDate: ', moviesData);
+        fs.writeFileSync('./movie-data.json', JSON.stringify(moviesData), 'utf-8');
 })();
