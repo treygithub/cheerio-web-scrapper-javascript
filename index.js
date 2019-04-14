@@ -3,6 +3,7 @@ const cheerio = require('cheerio');
 const proxy = 'https://bypasscors.herokuapp.com/api/?url=';
 const url = [`${proxy}https://www.imdb.com/title/tt4154664/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=740b2354-425b-4cd3-947b-7f9cb4349875&pf_rd_r=DFRWPM57QBF3QXD0RV1M&pf_rd_s=right-7&pf_rd_t=15061&pf_rd_i=homepage&ref_=hm_cht_t4`,`${proxy}https://www.imdb.com/title/tt0137523/?ref_=nv_sr_3?ref_=nv_sr_3`];
 const fs = require('fs');
+const { Parser } = require('json2csv');
 
 ( async()=>{
     let moviesData = [];
@@ -44,6 +45,17 @@ const fs = require('fs');
             genra
         })
 }
-        console.log('moviesDate: ', moviesData);
-        fs.writeFileSync('./movie-data.json', JSON.stringify(moviesData), 'utf-8');
+ 
+        const fields = ['title', 'rating', 'ratingValue', 'poster', 'genra'];
+        const opts = { fields };
+        
+        try {
+        const parser = new Parser(opts);
+        const csv = parser.parse(moviesData);
+        console.log(csv);
+        fs.writeFileSync('./movie-data.csv', csv, 'utf-8');
+        } catch (err) {
+        console.error(err);
+        }
+
 })();
