@@ -1,16 +1,19 @@
-const request = require('request-promise');
+const requestPromise = require('request-promise');
+const request = require('request');
 const cheerio = require('cheerio');
 const proxy = 'https://bypasscors.herokuapp.com/api/?url=';
-const url = [`${proxy}https://www.imdb.com/title/tt4154664/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=740b2354-425b-4cd3-947b-7f9cb4349875&pf_rd_r=DFRWPM57QBF3QXD0RV1M&pf_rd_s=right-7&pf_rd_t=15061&pf_rd_i=homepage&ref_=hm_cht_t4`,`${proxy}https://www.imdb.com/title/tt0137523/?ref_=nv_sr_3?ref_=nv_sr_3`];
 const fs = require('fs');
 const { Parser } = require('json2csv');
+const urls = [
+{url:`${proxy}https://www.imdb.com/title/tt4154664/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=740b2354-425b-4cd3-947b-7f9cb4349875&pf_rd_r=DFRWPM57QBF3QXD0RV1M&pf_rd_s=right-7&pf_rd_t=15061&pf_rd_i=homepage&ref_=hm_cht_t4`},
+{url:`${proxy}https://www.imdb.com/title/tt0137523/?ref_=nv_sr_3?ref_=nv_sr_3`}];
 
-( async()=>{
+( async () => {
     let moviesData = [];
     // LOOP
-    for(let movie of url) {
+    for(let movie of urls) {
         const res = await request({
-            uri:movie,
+            uri:movie.url,
             // SPOOF THEM HEADERS
             headers: {
                 "authority": "www.imdb.com",
@@ -45,7 +48,7 @@ const { Parser } = require('json2csv');
             genra
         })
 }
- 
+        //synchronous
         const fields = ['title', 'rating', 'ratingValue', 'poster', 'genra'];
         const opts = { fields };
         
